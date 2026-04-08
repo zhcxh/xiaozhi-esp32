@@ -1,0 +1,23 @@
+# .github/workflows/sync-upstream.yml
+name: Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 0,12 * * *'  # 每天 UTC 0 点和 12 点运行
+  workflow_dispatch:        # 允许在 GitHub 网页上手动触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Sync Fork with Upstream
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        with:
+          target_sync_branch: main
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          upstream_sync_repo: 78/xiaozhi-esp32
+          upstream_sync_branch: main
